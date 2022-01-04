@@ -10,5 +10,6 @@ dependencies:
   - pytorch
   - cudatoolkit=11.3
   - pytest
+  - jupyterlab
   - pip
   - pip:
