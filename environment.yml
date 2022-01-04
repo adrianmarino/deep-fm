@@ -1,0 +1,14 @@
+name: dfm
+channels:
+  - defaults
+  - pytorch
+  - conda-forge
+dependencies:
+  - numpy
+  - pandas
+  - click
+  - pytorch
+  - cudatoolkit=11.3
+  - pytest
+  - pip
+  - pip:
