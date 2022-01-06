@@ -17,7 +17,7 @@ from torch.utils.data import DataLoader
 from callbacks.output import Logger
 from callbacks.reduce_lr_on_plateau import ReduceLROnPlateau
 from callbacks.validation import Validation
-from dataset.movielens import MovieLens1MDataset
+from dataset.movielens import MovieLens1MDataset, MovieLens20MDataset
 from logger import initialize_logger
 from modules import DeepFM
 from util.data_utils import train_val_split
@@ -75,6 +75,19 @@ def cv_train(ps):
     )
 
 
+def load_dataset(name):
+    if '1m' == name:
+        dataset_path = './datasets/ml-1m/ratings.dat'
+        dataset = MovieLens1MDataset(dataset_path=dataset_path)
+    else:
+        dataset_path = './datasets/ml-20m/ratings.csv'
+        dataset = MovieLens20MDataset(dataset_path=dataset_path)
+
+    logging.info('{} dataset loaded! Shape: {}'.format(dataset_path, dataset.shape))
+
+    return dataset
+
+
 # -----------------------------------------------------------------------------
 #
 #
@@ -93,34 +106,34 @@ def cv_train(ps):
 @click.option(
     '--cuda-process-memory-fraction',
     default=0.5,
-    help='Setup max memory user per CUDA procees. Percentage expressed between 0 and 1'
+    help='Setup max memory user per CUDA process. Percentage expressed between 0 and 1.'
 )
-def main(device, cuda_process_memory_fraction):
+@click.option(
+    '--dataset',
+    default='1m',
+    help='select movie lens dataset type. Values: 1m(default), 20m.'
+)
+def main(device, cuda_process_memory_fraction, dataset):
     initialize_logger()
     set_device_name(device)
     set_device_memory(device, cuda_process_memory_fraction)
 
-    dataset_path = './datasets/ml-1m/ratings.dat'
-    dataset = MovieLens1MDataset(dataset_path=dataset_path)
-
-    # dataset_path = '../datasets/ml-20m/ratings.csv'
-    # dataset = MovieLens20MDataset(dataset_path=dataset_path)
-    logging.info('{} dataset loaded!'.format(dataset_path))
+    ds = load_dataset(dataset)
 
     cv_train(Bunch({
         'lr': 0.001,
         'lr_factor': 0.1,
         'lr_patience': 1,
         'weight_decay': 1e-6,
-        'epochs': 15,
+        'epochs': 50,
         'embedding_size': 100,
-        'units_per_layer': [500, 500],
-        'dropout': 0.6,
-        'batch_size': 20000,
+        'units_per_layer': [300, 300],
+        'dropout': 0.8,
+        'batch_size': 4000,
         'train_percent': 0.7,
         'num_workers': 12,
-        'features_n_values': dataset.field_dims,
-        'dataset': dataset,
+        'features_n_values': ds.field_dims,
+        'dataset': ds,
         'device': get_device()
     }))
 

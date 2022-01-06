@@ -3,6 +3,7 @@ from bunch import Bunch
 from callbacks import Callback
 from modules.fn import Fn
 from modules.mixin.common_mixin import CommonMixin
+from util.stopwatch import Stopwatch
 
 
 class FitMixin(CommonMixin):
@@ -26,6 +27,14 @@ class FitMixin(CommonMixin):
 
         Callback.invoke_on_init(ctx, callbacks)
         for epoch in range(epochs):
+            stopwatch = Stopwatch()
             ctx['epoch'] = epoch + 1
-            ctx['train_loss'], ctx['time'] = Fn.train(self, data_loader, loss_fn, optimizer, ctx.device)
+            ctx['train_loss'] = Fn.train(
+                self,
+                data_loader,
+                loss_fn,
+                optimizer,
+                ctx.device
+            )
+            ctx['time'] = stopwatch.to_str()
             Callback.invoke_on_after_train(ctx, callbacks)
