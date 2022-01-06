@@ -36,7 +36,7 @@ $ conda env create -f environment.yml
 $ conda activate dfm
 ```
 
-**Paso 3**: Start regression test:
+**Paso 3**: Run regression tests:
 
 ```bash
 $ cd dfm
