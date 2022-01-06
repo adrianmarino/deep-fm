@@ -11,5 +11,9 @@ dependencies:
   - cudatoolkit=11.3
   - pytest
   - jupyterlab
+  - bunch
+  - matplotlib
+  - seaborn
+  - scikit-learn
   - pip
   - pip:

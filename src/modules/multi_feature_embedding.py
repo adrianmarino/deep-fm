@@ -2,7 +2,7 @@ import numpy as np
 from torch.nn import Module, Embedding
 from torch.nn.init import xavier_uniform_
 
-from modules.common_mixin import CommonMixin
+from modules.mixin.common_mixin import CommonMixin
 
 
 class MultiFeatureEmbedding(Module, CommonMixin):

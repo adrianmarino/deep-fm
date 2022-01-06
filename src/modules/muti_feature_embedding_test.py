@@ -3,7 +3,7 @@ import unittest
 from torch import LongTensor, Size
 
 from modules.multi_feature_embedding import MultiFeatureEmbedding
-from tensor_utils import tensor_eq
+from util.tensor_utils import tensor_eq
 
 
 class MultiFeatureEmbeddingTest(unittest.TestCase):

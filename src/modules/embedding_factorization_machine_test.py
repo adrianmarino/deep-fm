@@ -4,7 +4,7 @@ import torch
 from torch import FloatTensor, Tensor
 
 from modules.embedding_factorization_machine import EmbeddingFactorizationMachine
-from tensor_utils import tensor_eq
+from util.tensor_utils import tensor_eq
 
 
 def tensor_round(tensor, n_digits=2):

@@ -2,13 +2,13 @@ from torch import sigmoid
 from torch.nn import Module
 
 from modules.categorial_features_linear import CategoricalFeaturesLineal
-from modules.common_mixin import CommonMixin
 from modules.embedding_factorization_machine import EmbeddingFactorizationMachine
+from modules.mixin.fit_mixin import FitMixin
 from modules.mlp import MultiLayerPerceptron
 from modules.multi_feature_embedding import MultiFeatureEmbedding
 
 
-class DeepFM(Module, CommonMixin):
+class DeepFM(Module, FitMixin):
     def __init__(self, features_n_values: list[int], embedding_size, units_per_layer, dropout):
         super().__init__()
         self.lineal = CategoricalFeaturesLineal(features_n_values)
