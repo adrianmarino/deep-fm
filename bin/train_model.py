@@ -4,6 +4,8 @@
 # -----------------------------------------------------------------------------
 import sys
 
+from callbacks.early_stop_callback import EarlyStop
+
 sys.path.append('./src')
 
 import warnings
@@ -69,18 +71,22 @@ def cv_train(ps):
                 },
                 each_n_epochs=1
             ),
-            Logger(metrics=['epoch', 'lr', 'train_loss', 'val_loss', 'val_auc', 'time'], each_n_epochs=1),
-            ReduceLROnPlateau(metric='val_auc', mode='max', factor=ps.lr_factor, patience=ps.lr_patience)
+            Logger(
+                metrics=['epoch', 'lr', 'train_loss', 'val_loss', 'val_auc', 'time', 'patience'],
+                each_n_epochs=1
+            ),
+            ReduceLROnPlateau(metric='val_auc', mode='max', factor=ps.lr_factor, patience=ps.lr_patience),
+            EarlyStop(metric='val_auc', mode='max', patience=3)
         ]
     )
 
 
 def load_dataset(name):
     if '1m' == name:
-        dataset_path = './datasets/ml-1m/ratings.dat'
+        dataset_path = '../datasets/ml-1m/ratings.dat'
         dataset = MovieLens1MDataset(dataset_path=dataset_path)
     else:
-        dataset_path = './datasets/ml-20m/ratings.csv'
+        dataset_path = '../datasets/ml-20m/ratings.csv'
         dataset = MovieLens20MDataset(dataset_path=dataset_path)
 
     logging.info('{} dataset loaded! Shape: {}'.format(dataset_path, dataset.shape))

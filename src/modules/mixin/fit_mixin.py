@@ -38,3 +38,6 @@ class FitMixin(CommonMixin):
             )
             ctx['time'] = stopwatch.to_str()
             Callback.invoke_on_after_train(ctx, callbacks)
+
+            if 'early_stop' in ctx and ctx.early_stop is True:
+                break
