@@ -47,6 +47,7 @@ $ pytest
 
 ```bash
 $ python bin/train_model.py
+
 2022-01-06 21:47:54,145 MainProcess root INFO ../datasets/ml-1m/ratings.dat dataset loaded! Shape: (1000209, 2)
 2022-01-06 21:47:54,195 MainProcess root INFO Start training...
 2022-01-06 21:48:05,794 MainProcess root INFO {'time': '0:00:05.55', 'epoch': 2, 'train_loss': 96.89652383327484, 'val_loss': 0.5426889061927795, 'val_auc': 0.7907098209219573, 'patience': 0, 'lr': 0.001}
