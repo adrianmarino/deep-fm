@@ -22,12 +22,13 @@ class FitMixin(CommonMixin):
             'optimizer': optimizer,
             'loss_fn': loss_fn,
             'device': self.device,
-            'model': self
+            'model': self,
+            'stopwatch': Stopwatch()
         })
 
         Callback.invoke_on_init(ctx, callbacks)
         for epoch in range(epochs):
-            stopwatch = Stopwatch()
+            ctx.stopwatch.reset()
             ctx['epoch'] = epoch + 1
             ctx['train_loss'] = Fn.train(
                 self,
@@ -36,7 +37,7 @@ class FitMixin(CommonMixin):
                 optimizer,
                 ctx.device
             )
-            ctx['time'] = stopwatch.to_str()
+            ctx['time'] = ctx.stopwatch.to_str()
             Callback.invoke_on_after_train(ctx, callbacks)
 
             if 'early_stop' in ctx and ctx.early_stop is True:

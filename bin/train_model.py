@@ -42,7 +42,7 @@ from torch.optim import Adam
 # -----------------------------------------------------------------------------
 # Functions
 # -----------------------------------------------------------------------------
-def cv_train(ps):
+def train(ps):
     train_set, val_set = train_val_split(ps.dataset, ps.train_percent)
 
     model = DeepFM(
@@ -123,7 +123,7 @@ def main(device, cuda_process_memory_fraction, dataset):
 
     ds = load_dataset(dataset)
 
-    cv_train(Bunch({
+    train(Bunch({
         'lr': 0.001,
         'lr_factor': 0.1,
         'lr_patience': 1,
