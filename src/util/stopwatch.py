@@ -13,4 +13,4 @@ class Stopwatch:
 
     def elapsed_time(self): return time.time() - self.start_time
 
-    def to_str(self): return self.elapsed_time()
+    def to_str(self): return to_hms_str(self.elapsed_time())

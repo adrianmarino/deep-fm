@@ -71,10 +71,7 @@ def cv_train(ps):
                 },
                 each_n_epochs=1
             ),
-            Logger(
-                metrics=['epoch', 'lr', 'train_loss', 'val_loss', 'val_auc', 'time', 'patience'],
-                each_n_epochs=1
-            ),
+            Logger(['time', 'epoch', 'train_loss', 'val_loss', 'val_auc', 'patience', 'lr']),
             ReduceLROnPlateau(metric='val_auc', mode='max', factor=ps.lr_factor, patience=ps.lr_patience),
             EarlyStop(metric='val_auc', mode='max', patience=3)
         ]
