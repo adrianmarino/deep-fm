@@ -94,3 +94,23 @@ $ python bin/train_model.py
 2022-01-06 21:51:23,262 MainProcess root INFO {'time': '0:00:05.77', 'epoch': 36, 'train_loss': 85.27811680734158, 'val_loss': 0.5305851101875305, 'val_auc': 0.8043733597837905, 'patience': 1, 'lr': 1.0000000000000004e-08}
 2022-01-06 21:51:28,985 MainProcess root INFO {'time': '0:00:05.67', 'epoch': 37, 'train_loss': 85.32134871184826, 'val_loss': 0.5305461883544922, 'val_auc': 0.8043721797174711, 'patience': 2, 'lr': 1.0000000000000004e-08}
 ```
+
+## Help
+
+```bash
+$ python bin/train_model.py --help
+
+Usage: train_model.py [OPTIONS]
+
+Options:
+  --device TEXT                   Device used to functions and optimize model.
+                                  Values: gpu, cpu.
+  --cuda-process-memory-fraction FLOAT
+                                  Setup max memory user per CUDA process.
+                                  Percentage expressed between 0 and 1.
+  --dataset TEXT                  select movie lens dataset type. Values:
+                                  1m(default), 20m.
+  --cv-n-folds INTEGER            cross validation n folds.
+  --train-percent FLOAT           cross validation n folds.
+  --help                          Show this message and exit
+```
