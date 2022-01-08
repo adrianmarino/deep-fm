@@ -10,7 +10,7 @@ class Logger(OutputCallback):
         metrics=['time', 'epoch', 'train_loss', 'val_loss', 'val_auc', 'patience', 'lr']
 
     """
-    def __init__(self, metrics=['epoch', 'train_loss'], each_n_epochs=1):
+    def __init__(self, metrics=['time', 'epoch', 'train_loss'], each_n_epochs=1):
         super().__init__(each_n_epochs)
         self.metrics = metrics
 

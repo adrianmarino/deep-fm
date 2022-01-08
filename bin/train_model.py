@@ -3,25 +3,24 @@
 # Imports
 # -----------------------------------------------------------------------------
 import sys
-
-from callbacks.early_stop_callback import EarlyStop
-
 sys.path.append('./src')
 
 import warnings
-
 warnings.filterwarnings("ignore")
+
 
 import logging
 from bunch import Bunch
 from torch.utils.data import DataLoader
 
+from callbacks.early_stop_callback import EarlyStop
 from callbacks.output import Logger
 from callbacks.reduce_lr_on_plateau import ReduceLROnPlateau
 from callbacks.validation import Validation
+
 from dataset.movielens import MovieLens1MDataset, MovieLens20MDataset
 from logger import initialize_logger
-from modules import DeepFM
+from modules import DeepFM, Fn
 from util.data_utils import train_val_split
 from util.device_utils import set_device_name, set_device_memory, get_device
 
@@ -31,6 +30,10 @@ import click
 
 from torch.nn import BCELoss
 from torch.optim import Adam
+
+from kfoldcv import KFoldCV
+
+from torch.utils.data import Subset
 
 
 # -----------------------------------------------------------------------------
@@ -42,9 +45,7 @@ from torch.optim import Adam
 # -----------------------------------------------------------------------------
 # Functions
 # -----------------------------------------------------------------------------
-def train(ps):
-    train_set, val_set = train_val_split(ps.dataset, ps.train_percent)
-
+def cv_train_fn(train_subset, train_idx, val_idx, ps, fold):
     model = DeepFM(
         ps.features_n_values,
         ps.embedding_size,
@@ -52,9 +53,11 @@ def train(ps):
         ps.dropout
     ).to(ps.device)
 
-    logging.info('Start training...')
-    model.fit(
-        data_loader=DataLoader(train_set, ps.batch_size, num_workers=ps.num_workers),
+    train_set = DataLoader(Subset(train_subset, train_idx), ps.batch_size, num_workers=ps.num_workers)
+    val_set = DataLoader(Subset(train_subset, val_idx), ps.batch_size, num_workers=ps.num_workers)
+
+    result = model.fit(
+        train_set,
         loss_fn=BCELoss(),
         epochs=ps.epochs,
         optimizer=Adam(
@@ -64,31 +67,83 @@ def train(ps):
         ),
         callbacks=[
             Validation(
-                data_loader=DataLoader(val_set, ps.batch_size, num_workers=ps.num_workers),
+                val_set,
                 metrics={
                     'val_loss': lambda y_pred, y_true: BCELoss()(y_pred, y_true).item(),
                     'val_auc': lambda y_pred, y_true: roc_auc_score(y_true.cpu().numpy(), y_pred.cpu().numpy())
                 },
                 each_n_epochs=1
             ),
-            Logger(['time', 'epoch', 'train_loss', 'val_loss', 'val_auc', 'patience', 'lr']),
+            Logger(['fold', 'time', 'epoch', 'train_loss', 'val_loss', 'val_auc', 'patience', 'lr']),
             ReduceLROnPlateau(metric='val_auc', mode='max', factor=ps.lr_factor, patience=ps.lr_patience),
             EarlyStop(metric='val_auc', mode='max', patience=3)
-        ]
+        ],
+        extra_ctx={'fold': fold + 1}
     )
+
+    return result.val_auc
 
 
 def load_dataset(name):
     if '1m' == name:
-        dataset_path = '../datasets/ml-1m/ratings.dat'
+        dataset_path = './datasets/ml-1m/ratings.dat'
         dataset = MovieLens1MDataset(dataset_path=dataset_path)
     else:
-        dataset_path = '../datasets/ml-20m/ratings.csv'
+        dataset_path = './datasets/ml-20m/ratings.csv'
         dataset = MovieLens20MDataset(dataset_path=dataset_path)
 
     logging.info('{} dataset loaded! Shape: {}'.format(dataset_path, dataset.shape))
 
     return dataset
+
+
+def validation(model, params, test_subset):
+    logging.info('Model test evaluation...')
+    test_data_loader = DataLoader(
+        test_subset,
+        params.batch_size,
+        num_workers=params.num_workers * 2
+    )
+    score = Fn.validation_score(model, test_data_loader, get_device(), roc_auc_score)
+    logging.info('Test score: {}'.format(score))
+
+
+def train(params, train_subset):
+    logging.info('Final model training (training + validation)...')
+    epochs = 20
+    model = DeepFM(
+        params.features_n_values,
+        params.embedding_size,
+        params.units_per_layer,
+        params.dropout
+    ).to(params.device)
+    summary = model.fit(
+        data_loader=DataLoader(
+            train_subset,
+            params.batch_size,
+            num_workers=params.num_workers * 2
+        ),
+        loss_fn=BCELoss(),
+        epochs=epochs,
+        optimizer=Adam(
+            params=model.parameters(),
+            lr=params.lr,
+            weight_decay=params.weight_decay
+        )
+    )
+    logging.info('summary: {}'.format(summary.items()))
+    return model
+
+
+def cross_validation(cv_n_folds, params, train_subset):
+    cv = KFoldCV(
+        cv_train_fn,
+        get_y_values_fn=lambda ss: ss.dataset.targets[train_subset.indices],
+        k_fold=cv_n_folds
+    )
+    logging.info('CV training...')
+    result = cv.train(train_subset, params)
+    logging.info('CV results: {}'.format(result))
 
 
 # -----------------------------------------------------------------------------
@@ -116,29 +171,45 @@ def load_dataset(name):
     default='1m',
     help='select movie lens dataset type. Values: 1m(default), 20m.'
 )
-def main(device, cuda_process_memory_fraction, dataset):
+@click.option(
+    '--cv-n-folds',
+    default=10,
+    help='cross validation n folds.'
+)
+@click.option(
+    '--train-percent',
+    default=0.7,
+    help='cross validation n folds.'
+)
+def main(device, cuda_process_memory_fraction, dataset, cv_n_folds, train_percent):
     initialize_logger()
     set_device_name(device)
     set_device_memory(device, cuda_process_memory_fraction)
 
     ds = load_dataset(dataset)
+    train_subset, test_subset = train_val_split(ds, train_percent=train_percent)
 
-    train(Bunch({
+    params = Bunch({
+        'seed': 42,
         'lr': 0.001,
         'lr_factor': 0.1,
         'lr_patience': 1,
         'weight_decay': 1e-6,
         'epochs': 50,
-        'embedding_size': 100,
-        'units_per_layer': [300, 300],
+        'embedding_size': 50,
+        'units_per_layer': [200, 200, 200],
         'dropout': 0.8,
         'batch_size': 4000,
-        'train_percent': 0.7,
         'num_workers': 12,
         'features_n_values': ds.field_dims,
-        'dataset': ds,
         'device': get_device()
-    }))
+    })
+
+    cross_validation(cv_n_folds, params, train_subset)
+
+    model = train(params, train_subset)
+
+    validation(model, params, test_subset)
 
 
 if __name__ == '__main__':

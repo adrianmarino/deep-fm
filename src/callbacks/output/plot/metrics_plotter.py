@@ -9,8 +9,8 @@ class MetricsPlotter(OutputCallback):
     def __init__(
             self,
             warmup_count=0,
-            plot_each_n_epochs=50,
-            reg_each_n_epochs=10,
+            plot_each_n_epochs=2,
+            reg_each_n_epochs=1,
             metrics=['train_loss']
     ):
         super().__init__(plot_each_n_epochs)

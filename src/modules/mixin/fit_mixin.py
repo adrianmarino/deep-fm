@@ -1,6 +1,7 @@
 from bunch import Bunch
 
 from callbacks import Callback
+from callbacks.output import Logger
 from modules.fn import Fn
 from modules.mixin.common_mixin import CommonMixin
 from util.stopwatch import Stopwatch
@@ -13,8 +14,9 @@ class FitMixin(CommonMixin):
             loss_fn,
             epochs,
             optimizer,
-            callbacks=[],
-            verbose=1
+            callbacks=[Logger()],
+            verbose=1,
+            extra_ctx={}
     ):
         """
         Train a model.
@@ -34,6 +36,8 @@ class FitMixin(CommonMixin):
             'model': self,
             'stopwatch': Stopwatch()
         })
+        for (k, v) in extra_ctx.items():
+            ctx[k] = v
 
         Callback.invoke_on_init(ctx, callbacks)
         for epoch in range(epochs):
@@ -51,3 +55,5 @@ class FitMixin(CommonMixin):
 
             if 'early_stop' in ctx and ctx.early_stop is True:
                 break
+
+        return ctx

@@ -30,3 +30,8 @@ class Fn:
                 y_true.extend(target.to(device))
 
         return as_tensor(y_pred), as_tensor(y_true)
+
+    @staticmethod
+    def validation_score(model, data_loader, device, score_fn):
+        y_pred, y_true = Fn.validation(model, data_loader, device)
+        return score_fn(y_true.cpu().numpy(), y_pred.cpu().numpy())
