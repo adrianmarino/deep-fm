@@ -9,6 +9,13 @@ Deep Factorization Machine Model for [CRT](https://en.wikipedia.org/wiki/Click-t
 * [Sistemas de Recomendación (Parte 1): Filtros Colaborativos | Clase 22 | Aprendizaje Profundo 2021](https://www.youtube.com/watch?v=YAvX3BBh7U4)
 * [Factorization Machine models in PyTorch](https://github.com/rixwew/pytorch-fm)
 
+
+## notebooks
+
+* [rs](https://github.com/adrianmarino/dfm/blob/master/notebooks/rs.ipynb)
+* [rs-check-how-works](https://github.com/adrianmarino/dfm/blob/master/notebooks/rs-check-how-works.ipynb)
+
+
 ## Requisites
 
 * [git](https://git-scm.com/downloads)
