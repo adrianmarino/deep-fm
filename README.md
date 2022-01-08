@@ -10,7 +10,7 @@ Deep Factorization Machine Model for [CRT](https://en.wikipedia.org/wiki/Click-t
 * [Factorization Machine models in PyTorch](https://github.com/rixwew/pytorch-fm)
 
 
-## notebooks
+## Notebooks
 
 * [rs](https://github.com/adrianmarino/dfm/blob/master/notebooks/rs.ipynb)
 * [rs-check-how-works](https://github.com/adrianmarino/dfm/blob/master/notebooks/rs-check-how-works.ipynb)
