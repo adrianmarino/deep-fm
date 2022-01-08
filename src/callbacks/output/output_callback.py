@@ -1,7 +1,5 @@
 from abc import abstractmethod
 
-from bunch import Bunch
-
 from callbacks import Callback
 
 

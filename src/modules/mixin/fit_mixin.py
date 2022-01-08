@@ -16,6 +16,15 @@ class FitMixin(CommonMixin):
             callbacks=[],
             verbose=1
     ):
+        """
+        Train a model.
+        :param data_loader: data_loader with train set.
+        :param loss_fn: function to minimize.
+        :param epochs: number of epochs to train model.
+        :param optimizer: optimizer used to adjust model.
+        :param callbacks: callback collection. See Callback.
+        :param verbose: show/hide logs.
+        """
         ctx = Bunch({
             'verbose': verbose,
             'epochs': epochs,

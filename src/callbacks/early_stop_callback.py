@@ -2,10 +2,18 @@ from callbacks import Callback
 
 
 class EarlyStop(Callback):
+    """
+    Stop training when model has stopped improving a specified metric.
+    """
     def __init__(self, metric, mode='min', patience=10):
-        self.__patience = patience
+        """
+        :param metric (str): Metric used to check model performance improving.
+        :param mode (str): One of `min`, `max`. In `min` mode check that metric go down after each epoch.
+        :param patience (int): Number of epochs with no metric improvement.
+        """
         self.__metric = metric
         self.__mode = mode
+        self.__patience = patience
 
     def on_init(self, ctx):
         ctx['patience'] = 0
