@@ -37,13 +37,13 @@ $ cd dfm
 $ conda env create -f environment.yml
 ```
 
-**Paso 3**: Enable project environment:
+**Step 3**: Enable project environment:
 
 ```bash
 $ conda activate dfm
 ```
 
-**Paso 3**: Run regression tests:
+**Step 3**: Run regression tests:
 
 ```bash
 $ cd dfm
