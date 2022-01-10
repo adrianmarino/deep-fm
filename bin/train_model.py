@@ -8,21 +8,18 @@ sys.path.append('./src')
 import warnings
 warnings.filterwarnings("ignore")
 
-
 import logging
 from bunch import Bunch
 from torch.utils.data import DataLoader
 
-from callbacks.early_stop_callback import EarlyStop
-from callbacks.output import Logger
-from callbacks.reduce_lr_on_plateau import ReduceLROnPlateau
-from callbacks.validation import Validation
+from pytorch_common.callbacks import EarlyStop, ReduceLROnPlateau, Validation
+from pytorch_common.callbacks.output import Logger
 
 from dataset.movielens import MovieLens1MDataset, MovieLens20MDataset
 from logger import initialize_logger
-from modules import DeepFM, Fn
-from util.data_utils import train_val_split
-from util.device_utils import set_device_name, set_device_memory, get_device
+from modules import DeepFM
+from pytorch_common.modules import Fn
+from pytorch_common.util import train_val_split, set_device_name, set_device_memory, get_device
 
 from sklearn.metrics import roc_auc_score
 
@@ -31,7 +28,7 @@ import click
 from torch.nn import BCELoss
 from torch.optim import Adam
 
-from kfoldcv import KFoldCV
+from pytorch_common.kfoldcv import StratifiedKFoldCV
 
 from torch.utils.data import Subset
 
@@ -136,7 +133,7 @@ def train(params, train_subset):
 
 
 def cross_validation(cv_n_folds, params, train_subset):
-    cv = KFoldCV(
+    cv = StratifiedKFoldCV(
         cv_train_fn,
         get_y_values_fn=lambda ss: ss.dataset.targets[train_subset.indices],
         k_fold=cv_n_folds

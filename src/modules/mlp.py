@@ -1,6 +1,6 @@
 from torch.nn import Module, Linear, BatchNorm1d, ReLU, Dropout, Sequential
 
-from modules.mixin.common_mixin import CommonMixin
+from pytorch_common.modules import CommonMixin
 
 
 class MultiLayerPerceptron(Module, CommonMixin):

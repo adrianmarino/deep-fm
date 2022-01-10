@@ -1,7 +1,6 @@
+from pytorch_common.modules import CommonMixin
 from torch import sum
 from torch.nn import Module
-
-from modules.mixin.common_mixin import CommonMixin
 
 
 class EmbeddingFactorizationMachine(Module, CommonMixin):

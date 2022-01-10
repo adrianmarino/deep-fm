@@ -1,9 +1,9 @@
+from pytorch_common.modules import FitMixin
 from torch import sigmoid
 from torch.nn import Module
 
 from modules.categorial_features_linear import CategoricalFeaturesLineal
 from modules.embedding_factorization_machine import EmbeddingFactorizationMachine
-from modules.mixin.fit_mixin import FitMixin
 from modules.mlp import MultiLayerPerceptron
 from modules.multi_feature_embedding import MultiFeatureEmbedding
 

@@ -1,4 +1,4 @@
-name: dfm
+name: deepfm
 channels:
   - defaults
   - pytorch
@@ -14,6 +14,6 @@ dependencies:
   - bunch
   - matplotlib
   - seaborn
-  - scikit-learn
   - pip
   - pip:
+      - pytorch-common

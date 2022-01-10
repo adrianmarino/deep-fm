@@ -2,7 +2,7 @@ from torch import sum, zeros
 from torch.nn import Parameter, Module
 from torch.nn.init import normal_
 
-from modules.mixin.common_mixin import CommonMixin
+from pytorch_common.modules import CommonMixin
 from modules.multi_feature_embedding import MultiFeatureEmbedding
 
 
