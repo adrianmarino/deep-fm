@@ -12,7 +12,7 @@ Deep Factorization Machine Model for [CRT](https://en.wikipedia.org/wiki/Click-t
 
 ## Notebooks
 
-* [Use example](https://github.com/adrianmarino/dfm/blob/master/notebooks/rs.ipynb)
+* [Use example](https://github.com/adrianmarino/dfm/blobQ/master/notebooks/rs.ipynb)
 * [rs-check-how-works](https://github.com/adrianmarino/dfm/blob/master/notebooks/rs-check-how-works.ipynb)
  
 

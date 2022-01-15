@@ -3,9 +3,13 @@
 # Imports
 # -----------------------------------------------------------------------------
 import sys
+
+import torch
+
 sys.path.append('./src')
 
 import warnings
+
 warnings.filterwarnings("ignore")
 
 import logging
@@ -14,6 +18,8 @@ from torch.utils.data import DataLoader
 
 from pytorch_common.callbacks import EarlyStop, ReduceLROnPlateau, Validation
 from pytorch_common.callbacks.output import Logger
+
+from callbacks.save_best_model_checkpoint import SaveBestModel
 
 from dataset.movielens import MovieLens1MDataset, MovieLens20MDataset
 from logger import initialize_logger
@@ -126,10 +132,11 @@ def train(params, train_subset):
             params=model.parameters(),
             lr=params.lr,
             weight_decay=params.weight_decay
-        )
+        ),
+        callbacks=[SaveBestModel(metric='train_loss')]
     )
     logging.info('summary: {}'.format(summary.items()))
-    return model
+    return summary
 
 
 def cross_validation(cv_n_folds, params, train_subset):
@@ -188,7 +195,7 @@ def main(device, cuda_process_memory_fraction, dataset, cv_n_folds, train_percen
 
     params = Bunch({
         'seed': 42,
-        'lr': 0.001,
+        'lr': 0.01,
         'lr_factor': 0.1,
         'lr_patience': 1,
         'weight_decay': 1e-6,
@@ -204,9 +211,13 @@ def main(device, cuda_process_memory_fraction, dataset, cv_n_folds, train_percen
 
     cross_validation(cv_n_folds, params, train_subset)
 
-    model = train(params, train_subset)
+    train_summary = train(params, train_subset)
 
-    validation(model, params, test_subset)
+    # Load best model...
+    best_model = train_summary.model
+    best_model.load_state_dict(torch.load(train_summary.best_model_path))
+
+    validation(best_model, params, test_subset)
 
 
 if __name__ == '__main__':

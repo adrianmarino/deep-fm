@@ -12,8 +12,6 @@ dependencies:
   - pytest
   - jupyterlab
   - bunch
-  - matplotlib
-  - seaborn
   - pip
   - pip:
       - pytorch-common
