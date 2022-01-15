@@ -4,7 +4,7 @@ Deep Factorization Machine Model for [CRT](https://en.wikipedia.org/wiki/Click-t
 
 ### References
 
-* [DeepFM: A Factorization-Machine based Neural Network for CTR Prediction](https://arxiv.org/pdf/1703.04247.pdf)
+* [DeepFM: A Factorization-Machine based Neural Network for CTR Prediction (Paper)](https://arxiv.org/pdf/1703.04247.pdf)
 * [Factorization Machines](https://d2l.ai/chapter_recommender-systems/fm.html)
 * [Sistemas de Recomendación (Parte 1): Filtros Colaborativos | Clase 22 | Aprendizaje Profundo 2021](https://www.youtube.com/watch?v=YAvX3BBh7U4)
 * [Factorization Machine models in PyTorch](https://github.com/rixwew/pytorch-fm)
@@ -12,8 +12,8 @@ Deep Factorization Machine Model for [CRT](https://en.wikipedia.org/wiki/Click-t
 
 ## Notebooks
 
-* [Use example](https://github.com/adrianmarino/dfm/blobQ/master/notebooks/rs.ipynb)
-* [rs-check-how-works](https://github.com/adrianmarino/dfm/blob/master/notebooks/rs-check-how-works.ipynb)
+* [Use example](https://github.com/adrianmarino/deep-fm/blob/master/notebooks/rs.ipynb)
+* [rs-check-how-works](https://github.com/adrianmarino/deep-fm/blob/master/notebooks/rs-check-how-works.ipynb)
  
 
 ## Requisites
@@ -29,27 +29,27 @@ Deep Factorization Machine Model for [CRT](https://en.wikipedia.org/wiki/Click-t
 **Step 1**: Clone repo.
 
 ```bash
-$ git clone https://github.com/adrianmarino/dfm.git
-$ cd dfm
+$ git clone https://github.com/adrianmarino/deep-fm.git
+$ cd deep-fm
 ```
 
-**Step 2**: Create environment:
+**Step 2**: Create environment.
 
 ```bash
 $ cd dfm
 $ conda env create -f environment.yml
 ```
 
-**Step 3**: Enable project environment:
+**Step 3**: Enable project environment.
 
 ```bash
-$ conda activate dfm
+$ conda activate deep-fm
 ```
 
-**Step 3**: Run regression tests:
+**Step 3**: Run regression tests.
 
 ```bash
-$ cd dfm
+$ cd deep-fm
 $ pytest
 ```
 
