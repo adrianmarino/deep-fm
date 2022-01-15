@@ -163,27 +163,27 @@ def cross_validation(cv_n_folds, params, train_subset):
 @click.option(
     '--device',
     default='gpu',
-    help='Device used to functions and optimize model. Values: gpu, cpu.'
+    help='Device used to functions and optimize model. Values: gpu(default) or cpu.'
 )
 @click.option(
     '--cuda-process-memory-fraction',
     default=0.5,
-    help='Setup max memory user per CUDA process. Percentage expressed between 0 and 1.'
+    help='Setup max memory user per CUDA process. Percentage expressed between 0 and 1(default: 0.5).'
 )
 @click.option(
     '--dataset',
     default='1m',
-    help='select movie lens dataset type. Values: 1m(default), 20m.'
+    help='Select movie lens dataset type. Values: 1m(default), 20m.'
 )
 @click.option(
     '--cv-n-folds',
     default=10,
-    help='cross validation n folds.'
+    help='cross validation n folds(default: 10).'
 )
 @click.option(
     '--train-percent',
     default=0.7,
-    help='cross validation n folds.'
+    help='cross validation n folds(default: 0.7).'
 )
 def main(device, cuda_process_memory_fraction, dataset, cv_n_folds, train_percent):
     initialize_logger()
