@@ -19,7 +19,7 @@ from torch.utils.data import DataLoader
 from pytorch_common.callbacks import EarlyStop, ReduceLROnPlateau, Validation
 from pytorch_common.callbacks.output import Logger
 
-from callbacks.save_best_model_checkpoint import SaveBestModel
+from pytorch_common.callbacks import SaveBestModel
 
 from dataset.movielens import MovieLens1MDataset, MovieLens20MDataset
 from logger import initialize_logger
