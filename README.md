@@ -59,8 +59,6 @@ $ pytest
 $ python bin/train_model.py
 ```
 
-## Help
-
 ```bash
 $ python bin/train_model.py --help
 
