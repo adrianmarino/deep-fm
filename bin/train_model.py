@@ -183,7 +183,7 @@ def cross_validation(cv_n_folds, params, train_subset):
 @click.option(
     '--train-percent',
     default=0.7,
-    help='cross validation n folds(default: 0.7).'
+    help='Observations percent to used on training process(default: 0.7).'
 )
 def main(device, cuda_process_memory_fraction, dataset, cv_n_folds, train_percent):
     initialize_logger()

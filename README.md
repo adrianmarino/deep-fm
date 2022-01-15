@@ -66,13 +66,15 @@ Usage: train_model.py [OPTIONS]
 
 Options:
   --device TEXT                   Device used to functions and optimize model.
-                                  Values: gpu, cpu.
+                                  Values: gpu(default) or cpu.
   --cuda-process-memory-fraction FLOAT
                                   Setup max memory user per CUDA process.
-                                  Percentage expressed between 0 and 1.
-  --dataset TEXT                  select movie lens dataset type. Values:
+                                  Percentage expressed between 0 and
+                                  1(default: 0.5).
+  --dataset TEXT                  Select movie lens dataset type. Values:
                                   1m(default), 20m.
-  --cv-n-folds INTEGER            cross validation n folds.
-  --train-percent FLOAT           cross validation n folds.
-  --help                          Show this message and exit
+  --cv-n-folds INTEGER            cross validation n folds(default: 10).
+  --train-percent FLOAT           Observations percent to used on training
+                                  process(default: 0.7).
+  --help                          Show this message and exit.
 ```
