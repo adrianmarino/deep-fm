@@ -68,7 +68,7 @@ Options:
   --device TEXT                   Device used to functions and optimize model.
                                   Values: gpu(default) or cpu.
   --cuda-process-memory-fraction FLOAT
-                                  Setup max memory user per CUDA process.
+                                  Setup max memory used per CUDA process.
                                   Percentage expressed between 0 and
                                   1(default: 0.5).
   --dataset TEXT                  Select movie lens dataset type. Values:
