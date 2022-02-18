@@ -18,7 +18,7 @@ Deep Factorization Machine Model for [CRT](https://en.wikipedia.org/wiki/Click-t
 
 ## Requisites
 
-* [anaconda](https://www.anaconda.com/products/individual) / [minconda](https://docs.conda.io/en/latest/miniconda.html)
+* [anaconda](https://www.anaconda.com/products/individual) / [miniconda](https://docs.conda.io/en/latest/miniconda.html)
 * pytorch-common
   * [Github repo](https://github.com/adrianmarino/pytorch-common/tree/master)
   * [Pypi repo](https://pypi.org/project/pytorch-common/)
