@@ -1,13 +1,13 @@
+#!/bin/python
 # -*- coding: utf-8 -*-
 # -----------------------------------------------------------------------------
 # Imports
 # -----------------------------------------------------------------------------
 import sys
 
-import torch
-
 sys.path.append('./src')
 
+import torch
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -22,10 +22,9 @@ from pytorch_common.callbacks.output import Logger
 from pytorch_common.callbacks import SaveBestModel
 
 from dataset.movielens import MovieLens1MDataset, MovieLens20MDataset
-from logger import initialize_logger
 from modules import DeepFM
 from pytorch_common.modules import Fn
-from pytorch_common.util import train_val_split, set_device_name, set_device_memory, get_device
+from pytorch_common.util import train_val_split, set_device_name, set_device_memory, get_device, LoggerBuilder
 
 from sklearn.metrics import roc_auc_score
 
@@ -170,23 +169,12 @@ def cross_validation(cv_n_folds, params, train_subset):
     default=0.5,
     help='Setup max memory user per CUDA process. Percentage expressed between 0 and 1(default: 0.5).'
 )
-@click.option(
-    '--dataset',
-    default='1m',
-    help='Select movie lens dataset type. Values: 1m(default), 20m.'
-)
-@click.option(
-    '--cv-n-folds',
-    default=10,
-    help='cross validation n folds(default: 10).'
-)
-@click.option(
-    '--train-percent',
-    default=0.7,
-    help='Observations percent to used on training process(default: 0.7).'
-)
+@click.option('--dataset', default='1m', help='Select movie lens dataset type. Values: 1m(default), 20m.')
+@click.option('--cv-n-folds', default=10, help='cross validation n folds(default: 10).')
+@click.option('--train-percent', default=0.7, help='Observations percent to used on training process(default: 0.7).')
 def main(device, cuda_process_memory_fraction, dataset, cv_n_folds, train_percent):
-    initialize_logger()
+    LoggerBuilder().on_console().build()
+
     set_device_name(device)
     set_device_memory(device, cuda_process_memory_fraction)
 

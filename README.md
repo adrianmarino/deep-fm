@@ -42,26 +42,25 @@ $ conda env create -f environment.yml
 **Step 3**: Enable project environment.
 
 ```bash
-$ conda activate deep-fm
+$ conda activate deepfm
 ```
 
 **Step 3**: Run regression tests.
 
 ```bash
-$ cd deep-fm
 $ pytest
 ```
 
 ## Training
 
 ```bash
-$ python bin/train_model.py
+$ python bin/train
 ```
 
 ```bash
-$ python bin/train_model.py --help
+$ python bin/train --help
 
-Usage: train_model.py [OPTIONS]
+Usage: train [OPTIONS]
 
 Options:
   --device TEXT                   Device used to functions and optimize model.
