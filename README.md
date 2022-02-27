@@ -1,6 +1,6 @@
 # DeepFM
 
-Deep Factorization Machine Model for [CRT](https://en.wikipedia.org/wiki/Click-through_rate) prediccion.
+Deep Factorization Machine Model for [CRT](https://en.wikipedia.org/wiki/Click-through_rate) prediction.
 
 ### References
 
