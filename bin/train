@@ -132,7 +132,7 @@ def train(params, train_subset):
             lr=params.lr,
             weight_decay=params.weight_decay
         ),
-        callbacks=[SaveBestModel(metric='val_loss')]
+        callbacks=[SaveBestModel(metric='train_loss')]
     )
     logging.info('summary: {}'.format(summary.items()))
     return summary
