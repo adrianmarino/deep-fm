@@ -23,7 +23,7 @@ Deep Factorization Machine Model for [CRT](https://en.wikipedia.org/wiki/Click-t
   * [Github repo](https://github.com/adrianmarino/pytorch-common/tree/master)
   * [Pypi repo](https://pypi.org/project/pytorch-common/)
 
-## Getting starter
+## Getting started
 
 **Step 1**: Clone repo.
 
